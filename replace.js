@@ -34,7 +34,7 @@ var url = './test',
 function replaceStr(nameOrigin,nameToReplace,originurl,targeturl){
     targeturl = targeturl || originurl;
     var absurl = fs.realpathSync(originurl);
-    var toabsurl = fs.realpathSync(targeturl);
+    var toabsurl = path.resolve(targeturl);
     var readable = fs.createReadStream(absurl);
     var arr = [];
     //每一次读取64kb的数据
@@ -49,7 +49,7 @@ function replaceStr(nameOrigin,nameToReplace,originurl,targeturl){
         //改变后的内容
         var changedStr = originStr.replace(regexp,nameToReplace);
         //此时可以安全创建写入流,注意end事情没有触发时是不可以同时创建写入流的,end触发后文件描述符自动关闭
-        var writable = fs.createWriteStream(toabsurl,{flags:''});
+        var writable = fs.createWriteStream(toabsurl);
         //写入文件
         writable.write(changedStr);
     })
